@@ -1,1 +1,110 @@
-,
+<!doctype html>
+<html>
+
+<head>
+    <title>Rail Monitoring System</title>
+    <link rel="stylesheet" href='../static/style.css'/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+		body {
+			text-align: center;
+		}
+
+		#g1,
+		#g2,
+        #g3 {
+			width: 200px;
+			height: 160px;
+			display: inline-block;
+			margin: 1em;
+		}
+
+    </style>
+</head>
+
+<body>
+
+	<h1>Rail Monitoring System</h1>
+
+    <div id="g1"></div>
+    <div id="g2"></div>
+	<div id="g3"></div>
+	
+	<h3> Distance in cm: {{ distance }}
+	<hr>
+	<img id= "myimage" src="/plot/temp" alt="Image Placeholder" width="33%">
+	<img src="/plot/hum" alt="Image Placeholder" width="33%">
+	<!-- <img src="/plot/lux" alt="Image Placeholder" width="33%">-->
+    <iframe width="640" height="480"
+src="http://nxtbase.ddnss.ch:8118/">
+</iframe>
+	
+    <script src="../static/raphael-2.1.4.min.js"></script>
+    <script src="../static/justgage.js"></script>
+    <script>
+    
+function refreshImage(imgElement, imgURL){    
+    // create a new timestamp 
+    var timestamp = new Date().getTime();  
+  
+    var el = document.getElementById(imgElement);  
+  
+    var queryString = "?t=" + timestamp;    
+   
+    el.src = imgURL + queryString;    
+}    
+
+    
+    
+		var g1, g2 , g3 ;
+		document.addEventListener("DOMContentLoaded", function(event) {
+			g1 = new JustGage({
+				id: "g1",
+				value: {{temp}},
+				valueFontColor: "yellow",
+				titleFontColor: "yellow",
+				min: -10,
+				max: 60,
+				title: "Temperature",
+				label: "Celcius"
+			});
+
+			g2 = new JustGage({
+				id: "g2",
+				value: {{hum}},
+				valueFontColor: "yellow",
+				titleFontColor: "yellow",
+				min: 0,
+				max: 100,
+				title: "Humidity",
+				label: "%"
+			});
+			
+			g3 = new JustGage({
+				id: "g3",
+				value: {{lux}},
+				valueFontColor: "yellow",
+				titleFontColor: "yellow",
+				min: 0,
+				max: 4000,
+				title: "Illuminance",
+				label: "Lux"
+			});			
+			
+
+		});
+		
+  refreshImage("myimage","/plot/temp")
+
+		
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
